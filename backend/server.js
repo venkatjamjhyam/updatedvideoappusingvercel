@@ -19,6 +19,11 @@ const nocache = (req, res, next) => {
     next();
 };
 
+// Root route to check server status
+app.get('/', (req, res) => {
+    res.send('Token server is live!');
+});
+
 // Token generation logic
 const generateRtcToken = (req, res) => {
     const channelName = req.query.channelName;
