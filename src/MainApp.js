@@ -191,7 +191,7 @@ function MainApp({ user, handleLogout }) {
                         <span className="welcome-message">Welcome, {user.displayName || user.email}!</span>
                         <div className="account-menu">
                             <button onClick={() => setIsAddUserModalOpen(true)}>Add User</button>
-                            <button onClick={() => setIsMenuOpen(!isMenuOpen)}>Account</button>
+                            <button onClick={() => setIsMenuOpen(!isMenuOpen)}>Profile</button>
                             {isMenuOpen && (
                                 <div className="dropdown-content">
                                     <button onClick={handleChangePassword}>Change Password</button>
