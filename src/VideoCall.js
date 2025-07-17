@@ -30,7 +30,7 @@ const getToken = async (channelName, uid) => {
 
 function VideoCall({ appId, channelName, onEndCall, onAddUser }) {
     const [remoteUsers, setRemoteUsers] = useState({});
-    const [localTracks, setLocalTracks] = useState([]);
+    const [localTracks, setLocalTracks] = useState([]);  // Keep localTracks state for proper cleanup
     const [isAudioMuted, setIsAudioMuted] = useState(false);
     const [isVideoMuted, setIsVideoMuted] = useState(false);
 
@@ -90,15 +90,19 @@ function VideoCall({ appId, channelName, onEndCall, onAddUser }) {
 
             if (token && tokenUserId) {
                 try {
+                    // Join Agora channel with the token
                     await agoraEngine.join(appId, channelName, token, tokenUserId);
 
+                    // Create microphone and camera tracks
                     const tracks = await AgoraRTC.createMicrophoneAndCameraTracks();
-                    setLocalTracks(tracks);
+                    setLocalTracks(tracks);  // Store tracks in state
 
+                    // Play the local video
                     if (localPlayerRef.current) {
-                        tracks[1].play(localPlayerRef.current);
+                        tracks[1].play(localPlayerRef.current);  // Video track at index 1
                     }
 
+                    // Publish the tracks to Agora
                     await agoraEngine.publish(tracks);
                 } catch (error) {
                     console.error("Failed to join Agora channel", error);
@@ -114,16 +118,18 @@ function VideoCall({ appId, channelName, onEndCall, onAddUser }) {
 
         return () => {
             // Cleanup: stop and close local tracks when component unmounts
-            for (const track of localTracks) {
-                track.stop();
-                track.close();
+            if (localTracks.length > 0) {
+                localTracks.forEach(track => {
+                    track.stop();
+                    track.close();
+                });
             }
             agoraEngine.off('user-published', handleUserPublished);
             agoraEngine.off('user-unpublished', handleUserUnpublished);
             agoraEngine.off('user-left', handleUserLeft);
             agoraEngine.leave();
         };
-    }, [appId, channelName, localTracks, onEndCall]); // Removed token and uid from dependencies
+    }, [appId, channelName, localTracks, onEndCall]);  // Handle only relevant dependencies
 
     const toggleAudio = async () => {
         if (localTracks[0]) {
