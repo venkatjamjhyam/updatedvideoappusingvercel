@@ -7,7 +7,7 @@ const agoraEngine = AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' });
 // Function to fetch the token from the backend
 const getToken = async (channelName, uid) => {
     try {
-        const response = await fetch(`https://updatedvideoappusingvercel.onrender.com/get-token?channelName=${channelName}&uid=${uid}`);
+        const response = await fetch(`https://updatedvideoappusingvercel.onrender.com/get-token?channelName=yourChannel&uid=yourUserId`);
         
         if (response.ok) {
             const data = await response.json();
