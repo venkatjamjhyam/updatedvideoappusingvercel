@@ -16,7 +16,8 @@ function MainApp({ user, handleLogout }) {
     const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false);
 
     const AGORA_APP_ID = '8921a9b25e124ac1b4461f45f3b4b91c';
-    const TOKEN_SERVER_URL = 'http://localhost:8080';
+    const TOKEN_SERVER_URL = 'https://updatedvideoappusingvercel.onrender.com';
+
 
     // *** MODIFIED to return both token and uid ***
     const fetchTokenAndUid = async (channelName) => {
