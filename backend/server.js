@@ -4,7 +4,7 @@ const cors = require('cors');
 require('dotenv').config(); // Load environment variables
 
 const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 10000;
 
 const APP_ID = process.env.AGORA_APP_ID; // Get from .env file
 const APP_CERTIFICATE = process.env.AGORA_APP_CERTIFICATE; // Get from .env file
