@@ -7,7 +7,7 @@
 
 # 🚨 SENSITIVE FILES - NEVER COMMIT THESE! 🚨
 # This ensures your server credentials are not pushed to GitHub.
-/server/.env
+#/server/.env*
 
 # Create React App specific files
 .env.local
