@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 8080;
 const APP_ID = process.env.AGORA_APP_ID; // Get from .env file
 const APP_CERTIFICATE = process.env.AGORA_APP_CERTIFICATE; // Get from .env file
 
-app.use(cors({ origin: 'https://updatedvideoappusingvercel.vercel.app/' }));
+app.use(cors({ origin:'https://updatedvideoappusingvercel.vercel.app' }));
  // Allow cross-origin requests
 
 // Middleware to prevent server caching
