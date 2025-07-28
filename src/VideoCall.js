@@ -16,18 +16,18 @@ function VideoCall({ appId, channelName, onEndCall, onAddUser, uid }) {
 
     const localPlayerRef = useRef(null);
 
-    console.log("VideoCall props:", { appId, channelName, uid });
-
     const handleUserPublished = async (user, mediaType) => {
         await agoraEngine.subscribe(user, mediaType);
-        if (mediaType === 'video') {
-            setRemoteUsers(prev => ({
-                ...prev,
-                [user.uid]: { user, hasVideo: true }
-            }));
-        }
+        setRemoteUsers(prev => ({
+            ...prev,
+            [user.uid]: {
+                user,
+                hasVideo: mediaType === 'video'
+            }
+        }));
+
         if (mediaType === 'audio') {
-            user.audioTrack.play();
+            user.audioTrack?.play();
         }
     };
 
@@ -35,7 +35,7 @@ function VideoCall({ appId, channelName, onEndCall, onAddUser, uid }) {
         if (mediaType === 'video') {
             setRemoteUsers(prev => ({
                 ...prev,
-                [user.uid]: { ...(prev[user.uid] || {}), user, hasVideo: false }
+                [user.uid]: { ...(prev[user.uid] || {}), hasVideo: false }
             }));
         }
     };
@@ -70,8 +70,6 @@ function VideoCall({ appId, channelName, onEndCall, onAddUser, uid }) {
         const joinChannel = async () => {
             try {
                 await createChannelInFirebase();
-                console.log("Joining Agora Channel:", { appId, channelName, uid });
-
                 await agoraEngine.join(appId, channelName, null, uid);
 
                 agoraEngine.on('user-published', handleUserPublished);
@@ -119,7 +117,11 @@ function VideoCall({ appId, channelName, onEndCall, onAddUser, uid }) {
 
     const toggleVideo = async () => {
         if (localTracks[1]) {
-            await localTracks[1].setEnabled(!isVideoMuted);
+            const newState = !isVideoMuted;
+            await localTracks[1].setEnabled(newState);
+            if (newState && localPlayerRef.current) {
+                localTracks[1].play(localPlayerRef.current);
+            }
             setIsVideoMuted(!isVideoMuted);
         }
     };
