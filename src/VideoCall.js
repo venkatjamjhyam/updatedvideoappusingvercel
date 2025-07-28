@@ -80,11 +80,11 @@ function VideoCall({ appId, channelName, onEndCall, onAddUser, uid }) {
                 setLocalTracks(tracks);
                 localTracksRef.current = tracks;
 
-                if (localPlayerRef.current) {
+                await agoraEngine.publish(tracks);
+
+                if (localPlayerRef.current && tracks[1]) {
                     tracks[1].play(localPlayerRef.current);
                 }
-
-                await agoraEngine.publish(tracks);
             } catch (error) {
                 console.error("Failed to join Agora channel", error);
                 alert("Could not start video call. See console for details.");
@@ -107,6 +107,12 @@ function VideoCall({ appId, channelName, onEndCall, onAddUser, uid }) {
             agoraEngine.leave();
         };
     }, [appId, channelName, uid, onEndCall]);
+
+    useEffect(() => {
+        if (!isVideoMuted && localTracksRef.current[1] && localPlayerRef.current) {
+            localTracksRef.current[1].play(localPlayerRef.current);
+        }
+    }, [isVideoMuted]);
 
     const toggleAudio = async () => {
         if (localTracks[0]) {
