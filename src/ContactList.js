@@ -15,7 +15,6 @@ function ContactList({ onSelectUser }) {
         return () => unsubscribe();
     }, []);
 
-    // **MODIFIED**: This logic is now enhanced to check the 'inCall' status.
     const otherUsers = Object.keys(onlineUsers).filter(uid => uid !== currentUser.uid);
 
     return (
@@ -26,8 +25,6 @@ function ContactList({ onSelectUser }) {
                     otherUsers.map(uid => {
                         const user = onlineUsers[uid];
                         const displayName = user.displayName || user.email;
-                        
-                        // NEW: Check if the user is currently in a call.
                         const isInCall = user.inCall === true;
 
                         return (
@@ -35,16 +32,13 @@ function ContactList({ onSelectUser }) {
                                 {displayName}
                                 <button 
                                     onClick={() => onSelectUser(uid, displayName)}
-                                    // NEW: Disable the button if the user is in a call.
                                     disabled={isInCall}
-                                    // NEW: Provide a helpful title for the button state.
                                     title={
                                         isInCall 
                                         ? `${displayName} is in another call` 
                                         : `Call ${displayName}`
                                     }
                                 >
-                                    {/* NEW: Change button text based on status. */}
                                     {isInCall ? 'In Call' : 'Video Call'}
                                 </button>
                             </li>

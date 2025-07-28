@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-// MODIFIED: Import sendPasswordResetEmail
 import { auth, db } from './firebase';
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { ref, get } from 'firebase/database';
@@ -51,11 +50,10 @@ function Login({ onToggle }) {
         }
     };
 
-    // NEW: Function to handle the password reset flow
     const handleForgotPassword = async () => {
         const email = prompt("Please enter your email address to reset your password:");
         if (!email) {
-            return; // User cancelled the prompt
+            return;
         }
         try {
             await sendPasswordResetEmail(auth, email);
@@ -87,14 +85,11 @@ function Login({ onToggle }) {
                 />
                 <button type="submit">Login</button>
             </form>
-            
-            {/* NEW: Forgot Password link */}
             <div className="forgot-password">
                 <button type="button" onClick={handleForgotPassword}>
                     Forgot Password?
                 </button>
             </div>
-
             <div className="toggle-form">
                 Don't have an account? <button onClick={onToggle}>Sign Up</button>
             </div>

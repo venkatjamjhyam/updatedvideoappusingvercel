@@ -46,7 +46,6 @@ function AddUserModal({ onClose, onSelectUser }) {
                             
                             const user = allUsers[uid];
                             const isOnline = !!onlineUsers[uid];
-                            // NEW: Check for the inCall status
                             const isInCall = isOnline && onlineUsers[uid].inCall === true;
 
                             return (
@@ -57,7 +56,6 @@ function AddUserModal({ onClose, onSelectUser }) {
                                     </div>
                                     <button 
                                         onClick={() => handleCallClick(uid, user.displayName || user.email)} 
-                                        // MODIFIED: Disable if offline or in a call
                                         disabled={!isOnline || isInCall}
                                         title={
                                             !isOnline 
@@ -67,7 +65,6 @@ function AddUserModal({ onClose, onSelectUser }) {
                                                 : `Call ${user.displayName || user.email}`
                                         }
                                     >
-                                        {/* MODIFIED: Change button text based on status */}
                                         {isInCall ? 'In Call' : 'Video Call'}
                                     </button>
                                 </li>

@@ -1,4 +1,3 @@
-// src/firebase.js
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getDatabase } from "firebase/database";
@@ -13,9 +12,6 @@ const firebaseConfig = {
   measurementId: "G-66CLSH998P"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
-// Export services
 export const auth = getAuth(app);
 export const db = getDatabase(app);

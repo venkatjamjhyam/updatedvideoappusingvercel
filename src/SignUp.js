@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-// NEW: Import more from firebase
 import { auth, db } from './firebase';
 import { createUserWithEmailAndPassword, updateProfile, signOut } from 'firebase/auth';
-// MODIFIED: Removed 'runTransaction' since it's not used
 import { ref, get, set } from 'firebase/database';
 
 function SignUp({ onToggle }) {
@@ -27,25 +25,20 @@ function SignUp({ onToggle }) {
                 return;
             }
 
-            // Step 1: Create the user with email and password
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
-            // Step 2: Update the new user's Auth profile with the displayName
             await updateProfile(user, {
                 displayName: username,
             });
 
-            // Step 3: Store user info in the Realtime Database
             const userRef = ref(db, `users/${user.uid}`);
             await set(userRef, {
                 displayName: username,
                 email: user.email,
             });
-            // Also store the username mapping
             await set(ref(db, `usernames/${formattedUsername}`), user.uid);
 
-            // Step 4: Sign the user out and show success message
             await signOut(auth);
             setSuccess('Account created successfully! Please log in.');
             
